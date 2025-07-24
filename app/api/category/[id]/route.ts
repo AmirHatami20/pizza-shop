@@ -6,12 +6,12 @@ import mongoose from "mongoose";
 // DELETE
 export async function DELETE(
     req: NextRequest,
-    context: { params: { id: string } }
+    {params}: { params: Promise<{ id: string }> }
 ) {
     try {
         await connectDB();
 
-        const {id} = context.params;
+        const {id} = await params;
 
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return NextResponse.json({error: "شناسه نامعتبر است"}, {status: 400});
@@ -33,12 +33,12 @@ export async function DELETE(
 // UPDATE
 export async function PUT(
     req: NextRequest,
-    context: { params: { id: string } }
+    {params}: { params: Promise<{ id: string }> }
 ) {
     try {
         await connectDB();
 
-        const {id} = context.params;
+        const {id} = await params;
         const data = await req.json();
 
         if (!mongoose.Types.ObjectId.isValid(id)) {
