@@ -27,12 +27,12 @@ export async function DELETE(req: NextRequest, {params}: { params: { id: string 
     }
 }
 
-
 // UPDATE
-export async function PUT(req: NextRequest, {params}: { params: { id: string } }) {
+export async function PUT(req: NextRequest, context: { params: { id: string } }) {
     try {
         await connectDB();
-        const {id} = params;
+
+        const {id} = context.params;
         const data = await req.json();
 
         if (!mongoose.Types.ObjectId.isValid(id)) {
