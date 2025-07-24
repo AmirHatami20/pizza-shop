@@ -4,11 +4,11 @@ import {Product} from "@/lib/models/Product";
 import mongoose from "mongoose";
 
 // DELETE
-export async function DELETE(req: NextRequest, {params}: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, context: { params: { id: string } }) {
     try {
         await connectDB();
 
-        const {id} = params;
+        const {id} = context.params;
 
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return NextResponse.json({error: "شناسه نامعتبر است"}, {status: 400});
@@ -23,12 +23,16 @@ export async function DELETE(req: NextRequest, {params}: { params: { id: string 
         return NextResponse.json({success: true});
     } catch (error) {
         console.error("DELETE Product Error:", error);
-        return NextResponse.json({error: "خطا در حذف محصول"}, {status: 500});
+        return NextResponse.json(
+            {error: "خطا در حذف محصول"},
+            {status: 500}
+        );
     }
 }
 
-// UPDATE
-export async function PUT(req: NextRequest, context: { params: { id: string } }) {
+// PUT
+export async function PUT(req: NextRequest, context: { params: { id: string } }
+): Promise<NextResponse> {
     try {
         await connectDB();
 
@@ -38,6 +42,7 @@ export async function PUT(req: NextRequest, context: { params: { id: string } })
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return NextResponse.json({error: "شناسه نامعتبر است"}, {status: 400});
         }
+
         const updated = await Product.findByIdAndUpdate(id, data, {new: true});
 
         if (!updated) {
@@ -47,6 +52,9 @@ export async function PUT(req: NextRequest, context: { params: { id: string } })
         return NextResponse.json(updated);
     } catch (error) {
         console.error("PUT Product Error:", error);
-        return NextResponse.json({error: "خطا در ویرایش محصول"}, {status: 500});
+        return NextResponse.json(
+            {error: "خطا در ویرایش محصول"},
+            {status: 500}
+        );
     }
 }

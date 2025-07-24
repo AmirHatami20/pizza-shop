@@ -4,11 +4,11 @@ import {NextRequest, NextResponse} from "next/server";
 import mongoose from "mongoose";
 
 // DELETE
-export async function DELETE(req: NextRequest, {params}: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, context: { params: { id: string } }) {
     try {
         await connectDB();
 
-        const {id} = params;
+        const {id} = context.params;
 
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return NextResponse.json({error: "شناسه نامعتبر است"}, {status: 400});
@@ -23,12 +23,16 @@ export async function DELETE(req: NextRequest, {params}: { params: { id: string 
         return NextResponse.json({message: "دسته‌بندی حذف شد", deleted});
     } catch (error) {
         console.error("DELETE Category Error:", error);
-        return NextResponse.json({error: "خطا در حذف دسته‌بندی"}, {status: 500});
+        return NextResponse.json(
+            {error: "خطا در حذف دسته‌بندی"},
+            {status: 500}
+        );
     }
 }
 
 // UPDATE
-export async function PUT(req: NextRequest, context: { params: { id: string } }) {
+export async function PUT(req: NextRequest, context: { params: { id: string } }
+): Promise<NextResponse> {
     try {
         await connectDB();
 
@@ -47,6 +51,9 @@ export async function PUT(req: NextRequest, context: { params: { id: string } })
         return NextResponse.json(updated);
     } catch (error) {
         console.error("PUT Category Error:", error);
-        return NextResponse.json({error: "خطا در آپدیت دسته‌بندی"}, {status: 500});
+        return NextResponse.json(
+            {error: "خطا در آپدیت دسته‌بندی"},
+            {status: 500}
+        );
     }
 }
