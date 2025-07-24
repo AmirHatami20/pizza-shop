@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+@theme {
+    --color-primary: #f13a01;
+}
+
+@layer base {
+    button {
+        @apply cursor-pointer;
+    }
+}
+
+@layer utilities {
+    .container {
+        margin-inline: auto;
+        position: relative;
+        width: 90% !important;
+
+        @variant sm {
+            max-width: 640px;
+        }
+        @variant md {
+            max-width: 768px;
+        }
+        @variant lg {
+            max-width: 1024px;
+        }
+        @variant xl {
+            max-width: 1280px !important;
+        }
+    }
+
+    .auth-form {
+        @apply flex flex-col space-y-4 w-xs md:w-sm border mb-12 border-primary shadow-md shadow-primary px-4 py-9 rounded-lg;
+    }
+
+    .auth-title {
+        @apply text-primary font-semibold text-center text-3xl w-full;
+    }
+
+    .auth-input {
+        @apply rounded-lg border border-gray-300 bg-gray-200 p-3 w-full outline-0;
+    }
+
+    .loader {
+        @apply border-4 border-white border-t-4 border-e-primary rounded-full w-14 h-14 animate-[spin_1s_linear_infinite];
+    }
+
+    .primary-button {
+        @apply flex items-center justify-center gap-x-2 rounded-full bg-primary  px-5 text-white shadow shadow-red-300 font-semibold py-2;
+    }
+}
