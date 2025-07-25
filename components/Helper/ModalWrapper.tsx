@@ -36,7 +36,7 @@ export default function ModalWrapper({children, title, handleClose, isOpenModal}
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-2xl font-bold">ساخت {title} جدید</h2>
+                    <h2 className="text-2xl font-bold">{title}</h2>
                     <button onClick={handleClose} className="text-gray-500 hover:text-red-500">✕</button>
                 </div>
                 {children}

@@ -1,32 +1,50 @@
-import React from 'react';
+'use client'
+
+import React, {useState} from 'react';
 import {Product} from '@/types'
 import {toPersianNumber} from "@/util/helper";
+import ProductModal from "@/components/Helper/ProductModal";
 
 export default function ProductCard(props: Product) {
     const {name, image, basePrice, description} = props;
+    const [isOpenModal, setIsOpenModal] = useState(false);
 
     return (
-        <div className="flex flex-col space-y-3 p-5 bg-gray-200 w-full rounded-lg justify-between text-center">
-            <div className="w-2/3 mx-auto ">
-                <img
-                    src={image}
-                    alt={name}
-                    height={200}
-                    width={200}
-                    className="w-full h-auto max-h-[150px]"
-                />
+        <>
+            <div className="flex flex-col space-y-3 p-5 bg-gray-200 w-full rounded-lg justify-between text-center">
+                <div className="w-2/3 mx-auto ">
+                    <img
+                        src={image}
+                        alt={name}
+                        height={200}
+                        width={200}
+                        className="w-full h-auto max-h-[150px]"
+                    />
+                </div>
+                <h3 className="font-bold text-2xl">
+                    {name}
+                </h3>
+                <p className="text-black/70 line-clamp-3">{description}</p>
+                <p>
+                    قیمت:
+                    <span className="text-primary font-semibold text-lg mr-1.5">
+                        {toPersianNumber(basePrice, true)}
+                    </span>
+                </p>
+                <button
+                    className="primary-button !py-3"
+                    onClick={() => {
+                        setIsOpenModal(true)
+                    }}
+                >
+                    اضافه کردن به سبد خرید
+                </button>
             </div>
-            <h3 className="font-bold text-2xl">
-                {name}
-            </h3>
-            <p className="text-black/70 line-clamp-3">{description}</p>
-            <p>
-                قیمت:
-                <span className="text-primary font-semibold text-lg mr-1.5">{toPersianNumber(basePrice, true)}</span>
-            </p>
-            <button className="primary-button !py-3">
-                اضافه کردن به سبد خرید
-            </button>
-        </div>
+
+            <ProductModal
+                isOpenModal={isOpenModal}
+                handleClose={() => setIsOpenModal(false)}
+            />
+        </>
     );
 }

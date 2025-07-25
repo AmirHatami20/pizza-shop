@@ -92,7 +92,5 @@ export function useAPI() {
                     queryClient.invalidateQueries({ queryKey: ["categories"] });
                 },
             })
-
-
     };
 }

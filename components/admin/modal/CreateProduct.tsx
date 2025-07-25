@@ -1,7 +1,7 @@
 import React, {useState, useRef} from 'react';
 import {IoCloudUploadOutline} from 'react-icons/io5';
 import {Category, SizeLabel} from '@/types';
-import ModalWrapper from "@/components/admin/modal/ModalWrapper";
+import ModalWrapper from "@/components/Helper/ModalWrapper";
 import {useAPI} from "@/hook/useAPI";
 import toast from "react-hot-toast";
 
@@ -143,7 +143,7 @@ export default function CreateProduct({isOpenModal = false, setIsOpenModal, cate
 
     return (
         <ModalWrapper
-            title="محصول"
+            title="ساخت محصول جدید"
             handleClose={handleClose}
             isOpenModal={isOpenModal}
         >

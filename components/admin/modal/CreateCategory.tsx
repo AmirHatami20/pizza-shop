@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import ModalWrapper from "@/components/admin/modal/ModalWrapper";
+import ModalWrapper from "@/components/Helper/ModalWrapper";
 import {useAPI} from "@/hook/useAPI";
 import toast from "react-hot-toast";
 

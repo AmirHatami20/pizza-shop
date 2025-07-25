@@ -15,6 +15,9 @@ export default function RegisterPage() {
         try {
             const res = await fetch(API_PATH.AUTH.REGISTER, {
                 method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify(data),
             });
 
