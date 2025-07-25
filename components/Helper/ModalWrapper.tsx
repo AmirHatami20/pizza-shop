@@ -24,7 +24,7 @@ export default function ModalWrapper({children, title, handleClose, isOpenModal}
 
     return (
         <div
-            className={`fixed inset-0 bg-black/50 cursor-pointer z-40 flex items-center justify-center transition-opacity duration-300 ${
+            className={`fixed inset-0 bg-black/50 z-40 flex items-center justify-center transition-opacity duration-300 ${
                 isOpenModal ? 'opacity-100 visible' : 'opacity-0 invisible'
             }`}
             onClick={handleClose}

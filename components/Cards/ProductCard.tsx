@@ -44,6 +44,7 @@ export default function ProductCard(props: Product) {
             <ProductModal
                 isOpenModal={isOpenModal}
                 handleClose={() => setIsOpenModal(false)}
+                product={props}
             />
         </>
     );

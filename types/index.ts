@@ -1,3 +1,5 @@
+import {Types} from "mongoose";
+
 export type SizeLabel = 'sm' | 'md' | 'lg';
 
 export interface Size {
@@ -31,4 +33,19 @@ export type ProductData = {
     totalProducts: number;
     totalFilteredProducts: number;
 }
+
+// Cart
+
+export interface CartItem {
+    product: Types.ObjectId | string;
+    size: string;
+    quantity: number;
+}
+
+export interface UserCart {
+    user: Types.ObjectId | string;
+    items: CartItem[];
+    updatedAt?: Date;
+}
+
 
