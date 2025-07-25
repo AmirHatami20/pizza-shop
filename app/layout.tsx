@@ -11,6 +11,12 @@ const vazir = Vazirmatn({
     weight: ["400", "500", "700", "800"],
 });
 
+export const metadata = {
+    icons: {
+        icon: "/logo.svg",
+    },
+};
+
 export default async function RootLayout({children}: { children: ReactNode }) {
     const session = await getServerSession(authOptions);
 
