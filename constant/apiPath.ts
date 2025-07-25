@@ -1,4 +1,7 @@
-const BASE_URL = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+const BASE_URL =
+    typeof window === 'undefined'
+        ? process.env.NEXTAUTH_URL || 'http://localhost:3000'
+        : '';
 
 export const API_PATH = {
     AUTH: {
