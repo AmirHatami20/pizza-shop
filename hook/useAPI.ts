@@ -8,9 +8,9 @@ import {
     deleteCategory,
     updateCategory,
     createProduct,
-    createCategory,
+    createCategory, createCart, getAllCarts,
 } from "@/lib/api";
-import {Category, Product, ProductData} from "@/types";
+import {Category, Product, ProductData, CartItem} from "@/types";
 
 interface PaginatedParams {
     page: number;
@@ -89,8 +89,22 @@ export function useAPI() {
             useMutation<Category, Error, Partial<Category>>({
                 mutationFn: (data) => createCategory(data),
                 onSuccess: () => {
-                    queryClient.invalidateQueries({ queryKey: ["categories"] });
+                    queryClient.invalidateQueries({queryKey: ["categories"]});
                 },
-            })
+            }),
+        // --- Cart ---
+        useCreateCart: () =>
+            useMutation<CartItem, Error, Partial<CartItem>>({
+                mutationFn: (data) => createCart(data),
+                onSuccess: () => {
+                    queryClient.invalidateQueries({queryKey: ["products"]});
+                },
+            }),
+        useGetCart: () =>
+            useQuery<CartItem[] | null>({
+                queryKey: ["cart"],
+                queryFn: getAllCarts,
+            }),
+
     };
 }

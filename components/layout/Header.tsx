@@ -6,6 +6,8 @@ import Link from 'next/link';
 import {HiBars2} from "react-icons/hi2";
 import {PiShoppingCartSimple} from "react-icons/pi";
 import {usePathname} from "next/navigation";
+import {useAPI} from "@/hook/useAPI";
+import {toPersianNumber} from "@/util/helper";
 
 const headerLinks = [
     {title: "صفحه اصلی", href: "/"},
@@ -16,6 +18,10 @@ const headerLinks = [
 
 export default function Header() {
     const [showSidebar, setShowSidebar] = useState(false);
+
+    const {useGetCart} = useAPI()
+    const {data: cartData} = useGetCart()
+    const cartCount = cartData?.length
 
     const pathname = usePathname();
     const {data: session} = useSession();
@@ -70,7 +76,12 @@ export default function Header() {
                         )}
                     </div>
                     {/* Cart */}
-                    <Link href="/menu">
+                    <Link href="/cart" className="relative">
+                        <div
+                            className="absolute bg-primary text-white text-sm flex items-center justify-center w-4 h-4 rounded-full -top-1 -right-1"
+                        >
+                            {session?.user ? toPersianNumber(cartCount) || toPersianNumber(0) : toPersianNumber(0)}
+                        </div>
                         <PiShoppingCartSimple className="text-2xl md:text-3xl"/>
                     </Link>
                 </div>
@@ -98,6 +109,11 @@ export default function Header() {
                 </div>
 
                 <nav className="flex flex-col gap-4 px-6 py-4">
+                    {/* Cart */}
+                    <Link href="/cart">
+                        <PiShoppingCartSimple className="text-2xl md:text-3xl"/>
+                    </Link>
+
                     {headerLinks.map((link, index) => {
                         const isActive = link.href === pathname
 

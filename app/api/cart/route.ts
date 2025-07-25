@@ -6,12 +6,6 @@ import {authOptions} from "@/lib/authOptions";
 import {Types} from "mongoose";
 import type {CartItem} from "@/types";
 
-interface AddToCartRequestBody {
-    productId: string;
-    size: string;
-    quantity?: number;
-}
-
 export async function POST(req: NextRequest) {
     try {
         await connectDB();
@@ -23,18 +17,18 @@ export async function POST(req: NextRequest) {
 
         const userId = session.user.id;
 
-        const body = await req.json() as AddToCartRequestBody;
-        const {productId, size, quantity} = body;
+        const body = await req.json() as CartItem;
+        const {product, size, quantity} = body;
 
-        if (!productId || !size) {
+        if (!product || !size) {
             return NextResponse.json({error: "Missing fields"}, {status: 400});
         }
 
-        if (!Types.ObjectId.isValid(productId)) {
+        if (!Types.ObjectId.isValid(product)) {
             return NextResponse.json({error: "Invalid product ID"}, {status: 400});
         }
 
-        const safeQuantity = typeof quantity === "number" && quantity > 0 ? quantity : 1;
+        const safeQuantity = quantity > 0 ? quantity : 1;
 
         let cart = await Cart.findOne({user: userId});
 
@@ -44,14 +38,14 @@ export async function POST(req: NextRequest) {
 
         const existingItem = cart?.items.find(
             (item: CartItem) =>
-                item.product.toString() === productId && item.size === size
+                item.product.toString() === product && item.size === size
         );
 
         if (existingItem) {
             existingItem.quantity += safeQuantity;
         } else {
             const newItem: CartItem = {
-                product: new Types.ObjectId(productId),
+                product: new Types.ObjectId(product),
                 size,
                 quantity: safeQuantity,
             };
@@ -64,6 +58,31 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({message: "محصول به سبد اضافه شد", cart}, {status: 201});
     } catch (error) {
         console.error("Add to cart error:", error);
+        return NextResponse.json({error: "Internal server error"}, {status: 500});
+    }
+}
+
+export async function GET() {
+    try {
+        await connectDB();
+        const session = await getServerSession(authOptions);
+
+        if (!session) {
+            return NextResponse.json({error: "Unauthorized"}, {status: 401});
+        }
+
+        const userId = session.user.id;
+
+        const cart = await Cart.findOne({user: userId}).populate("items.product");
+
+        if (!cart) {
+            return NextResponse.json({items: []}, {status: 200});
+        }
+
+        return NextResponse.json(cart?.items || [], {status: 200});
+
+    } catch (error) {
+        console.error("Get cart error:", error);
         return NextResponse.json({error: "Internal server error"}, {status: 500});
     }
 }

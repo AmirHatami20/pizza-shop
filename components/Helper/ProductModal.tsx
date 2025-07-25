@@ -3,6 +3,8 @@ import ModalWrapper from "@/components/Helper/ModalWrapper";
 import {Product} from "@/types";
 import {toPersianNumber} from "@/util/helper";
 import toast from "react-hot-toast";
+import {useSession} from "next-auth/react";
+import {useAPI} from "@/hook/useAPI";
 
 interface ProductModalProps {
     isOpenModal: boolean;
@@ -11,21 +13,24 @@ interface ProductModalProps {
 }
 
 export default function ProductModal({isOpenModal, handleClose, product}: ProductModalProps) {
-    const {name, image, description, sizes} = product;
+    const {name, image, description, sizes, _id} = product;
 
     const [productSize, setProductSize] = useState("");
-    const [price, setPrice] = useState(0);
+
+    const {data: session} = useSession();
+
+    const {useCreateCart} = useAPI();
+
+    const createCartMutation = useCreateCart()
 
     useEffect(() => {
         if (isOpenModal) {
             setProductSize("");
-            setPrice(0);
         }
     }, [isOpenModal]);
 
-    const handleSizeChange = (label: string, price: number) => {
+    const handleSizeChange = (label: string) => {
         setProductSize(label);
-        setPrice(price);
     };
 
     const handleAddToCart = () => {
@@ -33,7 +38,21 @@ export default function ProductModal({isOpenModal, handleClose, product}: Produc
             toast.error("لطفاً یک سایز انتخاب کنید.");
             return;
         }
+        if (!session?.user) {
+            toast.error("ابتدا در سایت وارد شوید.")
+            return;
+        }
 
+        createCartMutation.mutate({product: _id, size: productSize, quantity: 1,}, {
+                onSuccess: () => {
+                    toast.success("محصول به سبد خرید اضافه شد.");
+                    handleClose();
+                },
+                onError: () => {
+                    toast.error("خطا در اضافه کردن به سبد خرید.");
+                },
+            }
+        );
     };
 
     return (
@@ -59,6 +78,7 @@ export default function ProductModal({isOpenModal, handleClose, product}: Produc
                         {sizes.map((size) => (
                             <label
                                 key={size.label}
+                                onClick={() => handleSizeChange(size.label)}
                                 className={`flex items-center gap-x-2 px-4 py-2 justify-start border rounded-lg cursor-pointer transition-all ${
                                     productSize === size.label ? 'border-blue-500 bg-blue-50' : 'border-gray-300'
                                 }`}
@@ -68,8 +88,7 @@ export default function ProductModal({isOpenModal, handleClose, product}: Produc
                                     name="product-size"
                                     value={size.label}
                                     checked={productSize === size.label}
-                                    onChange={() => handleSizeChange(size.label, size.price)}
-                                    className="w-5 h-5"
+                                    onChange={() => handleSizeChange(size.label)}
                                 />
                                 <span className="w-6 capitalize text-blue-700">{size.label}</span>
                                 <span className="text-gray-600">
@@ -79,12 +98,6 @@ export default function ProductModal({isOpenModal, handleClose, product}: Produc
                         ))}
                     </div>
                 </div>
-
-                {price > 0 && (
-                    <div className="text-green-600 font-semibold">
-                        قیمت نهایی: {toPersianNumber(price, true)} تومان
-                    </div>
-                )}
 
                 <button
                     className="primary-button !py-3 w-full"

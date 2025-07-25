@@ -25,7 +25,8 @@ export const API_PATH = {
         UPDATE: (id: string) => `${BASE_URL}/api/category/${id}`,
         DELETE: (id: string) => `${BASE_URL}/api/category/${id}`,
     },
-    SUMMARY:{
-        GET_ALL: `${BASE_URL}/api/summary`,
+    CART: {
+        GET_ALL: `${BASE_URL}/api/cart`,
+        CREATE: `${BASE_URL}/api/cart`,
     }
 }

@@ -35,17 +35,9 @@ export type ProductData = {
 }
 
 // Cart
-
 export interface CartItem {
     product: Types.ObjectId | string;
     size: string;
     quantity: number;
 }
-
-export interface UserCart {
-    user: Types.ObjectId | string;
-    items: CartItem[];
-    updatedAt?: Date;
-}
-
 

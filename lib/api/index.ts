@@ -1,4 +1,4 @@
-import {Product, Category, ProductData} from "@/types";
+import {Product, Category, ProductData, CartItem} from "@/types";
 import {API_PATH} from "@/constant/apiPath";
 
 interface PaginatedParams {
@@ -138,4 +138,31 @@ export async function updateCategory(id: string, data: Partial<Category>): Promi
     }
 }
 
+// ————— Cart —————
+export async function createCart(data: Partial<CartItem>) {
+    try {
+        const res = await fetch(API_PATH.CART.CREATE, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(data),
+        })
+        if (!res.ok) new Error("ساخت کارت با خطا مواجه شد");
+        return res.json();
+    } catch (error) {
+        console.error("updateCategory Error:", error);
+        return null;
+    }
+}
+
+
+export async function getAllCarts(): Promise<CartItem[] | []> {
+    try {
+        const res = await fetch(API_PATH.CART.GET_ALL);
+        if (!res.ok) new Error("دریافت سبد خرید با خطا مواجه شد");
+        return res.json();
+    } catch (error) {
+        console.error("getAllCarts Error:", error);
+        return [];
+    }
+}
 
