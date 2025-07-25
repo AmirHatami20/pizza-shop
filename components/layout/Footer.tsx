@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Footer() {
     return (
@@ -7,9 +8,11 @@ export default function Footer() {
             <div className="container flex flex-col md:flex-row justify-between items-center gap-6 font-semibold">
                 {/* Logo */}
                 <div className="flex flex-col items-center md:items-start">
-                    <img
+                    <Image
                         src="/logo.svg"
                         alt="logo"
+                        width={25}
+                        height={25}
                         className="w-12 h-12"
                     />
                     <p className="mt-2 text-center md:text-left">پیتزا، حال خوب هر روز 🍕</p>
