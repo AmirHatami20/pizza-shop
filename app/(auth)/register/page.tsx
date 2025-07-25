@@ -22,6 +22,7 @@ export default function RegisterPage() {
             });
 
             if (res.ok) {
+                toast.success("ثبت نام با موفقیت انجام شد.")
                 router.push('/login');
             } else {
                 const error = await res.json();
