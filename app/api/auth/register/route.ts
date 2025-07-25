@@ -1,9 +1,9 @@
 import {connectDB} from '@/lib/mongoose';
 import {User} from '@/lib/models/User';
 import bcrypt from 'bcrypt';
-import {NextResponse} from 'next/server';
+import {NextRequest, NextResponse} from 'next/server';
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
     try {
         await connectDB();
         const {name, email, password} = await req.json();
