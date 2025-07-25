@@ -11,9 +11,8 @@ export default function Footer() {
                     <Image
                         src="/logo.svg"
                         alt="logo"
-                        width={25}
-                        height={25}
-                        className="w-12 h-12"
+                        width={50}
+                        height={50}
                     />
                     <p className="mt-2 text-center md:text-left">پیتزا، حال خوب هر روز 🍕</p>
                 </div>
