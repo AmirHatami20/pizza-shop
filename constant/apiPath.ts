@@ -5,7 +5,7 @@ const BASE_URL =
 
 export const API_PATH = {
     AUTH: {
-      REGISTER: `${BASE_URL}/auth/register`,
+      REGISTER: `${BASE_URL}/api/auth/register`,
     },
     PRODUCT: {
         GET_ALL: `${BASE_URL}/api/product`,
