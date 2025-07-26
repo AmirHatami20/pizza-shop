@@ -16,12 +16,12 @@ export default function Page() {
     const {useGetCart} = useAPI();
     const {data: cartItems = [], isLoading} = useGetCart()
 
-    const totalQuantity = isAuthenticated
-        ? cartItems?.reduce((sum, item) => sum + item.quantity, 0)
+    const totalQuantity = isAuthenticated && Array.isArray(cartItems)
+        ? cartItems.reduce((sum, item) => sum + item.quantity, 0)
         : 0;
 
-    const totalPrice = isAuthenticated
-        ? cartItems?.reduce((sum, item) => {
+    const totalPrice = isAuthenticated && Array.isArray(cartItems)
+        ? cartItems.reduce((sum, item) => {
             const product = item.product as Partial<Product>;
             const price = product?.sizes?.find(size => item.size === size.label)?.price || 0;
             return sum + price * item.quantity;

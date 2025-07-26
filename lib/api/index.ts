@@ -157,7 +157,10 @@ export async function createCart(data: Partial<CartItem>) {
 
 export async function getAllCarts(): Promise<CartItem[] | []> {
     try {
-        const res = await fetch(API_PATH.CART.GET_ALL);
+        const res = await fetch(API_PATH.CART.GET_ALL,{
+            method: "GET",
+            credentials: "include",
+        });
         if (!res.ok) new Error("دریافت سبد خرید با خطا مواجه شد");
         return res.json();
     } catch (error) {
