@@ -5,7 +5,7 @@ import {FaInstagram, FaTelegram, FaPhone} from "react-icons/fa";
 
 export default function Footer() {
     return (
-        <footer className="bg-[#f13a01] text-white border-t border-orange-400 pt-10 pb-6 px-6">
+        <footer className="bg-[#f13a01] w-full text-white border-t border-orange-400 pt-10 pb-6 px-6">
             <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-sm font-medium">
                 <div className="flex flex-col items-center md:items-start text-center md:text-right space-y-3">
                     <Image

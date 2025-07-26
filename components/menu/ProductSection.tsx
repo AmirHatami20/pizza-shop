@@ -11,7 +11,7 @@ type Props = {
 
 export default function ProductSection({products, categories}: Props) {
     return (
-        <div className="my-10 space-y-10">
+        <div className="mb-10 space-y-10">
             {categories.map(cat => {
                 const relatedProducts = products.filter(product =>
                     product.categories?.some(c => c._id === cat._id)

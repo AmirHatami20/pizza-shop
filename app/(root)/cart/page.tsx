@@ -17,24 +17,20 @@ export default function Page() {
     const {data: cartItems = [], isLoading} = useGetCart()
 
     const totalQuantity = isAuthenticated && Array.isArray(cartItems)
-        ? cartItems.reduce((sum, item) => sum + item.quantity, 0)
+        ? cartItems?.reduce((sum, item) => sum + item.quantity, 0)
         : 0;
 
     const totalPrice = isAuthenticated && Array.isArray(cartItems)
-        ? cartItems.reduce((sum, item) => {
+        ? cartItems?.reduce((sum, item) => {
             const product = item.product as Partial<Product>;
             const price = product?.sizes?.find(size => item.size === size.label)?.price || 0;
             return sum + price * item.quantity;
         }, 0)
         : 0;
 
-    if (status === "loading") {
-        return <p className="text-center mt-6">در حال بررسی وضعیت ورود...</p>;
-    }
-
     if (!isAuthenticated) {
         return (
-            <div className="flex items-center justify-center flex-col min-h-[600px] text-center mt-10">
+            <div className="flex h-full items-center justify-center flex-col text-center mt-10">
                 <p className="text-gray-600 mb-4">برای مشاهده سبد خرید ابتدا وارد حساب خود شوید.</p>
                 <button
                     onClick={() => signIn()}
@@ -47,7 +43,7 @@ export default function Page() {
     }
 
     return (
-        <div className="container  min-h-[620px]">
+        <div className="container">
             <SectionHeader subHeader="" mainHeader="سبد خرید"/>
 
             {isLoading ? (
