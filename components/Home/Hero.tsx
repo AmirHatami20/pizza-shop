@@ -37,7 +37,7 @@ export default function Hero() {
                     width={450}
                     height={450}
                     priority
-                    className="h-auto animate-[spin_10s_linear_infinite]"
+                    className="h-auto w-full animate-[spin_10s_linear_infinite]"
                 />
             </div>
         </section>
