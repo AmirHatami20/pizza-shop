@@ -66,14 +66,14 @@ export async function GET() {
     try {
         await connectDB();
         const session = await getServerSession(authOptions);
+        console.log(session)
 
         if (!session) {
             return NextResponse.json({error: "Unauthorized"}, {status: 401});
         }
 
-        const userId = session.user.id;
-
-        const cart = await Cart.findOne({user: userId}).populate("items.product");
+        const userIdentifier = session.user.id || session.user.email;
+        const cart = await Cart.findOne({user: userIdentifier}).populate("items.product");
 
         if (!cart) {
             return NextResponse.json({items: []}, {status: 200});
