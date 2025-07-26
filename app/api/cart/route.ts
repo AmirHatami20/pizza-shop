@@ -3,7 +3,7 @@ import Cart from "@/lib/models/Cart";
 import {NextRequest, NextResponse} from "next/server";
 import {getServerSession} from "next-auth";
 import {authOptions} from "@/lib/authOptions";
-import {Types} from "mongoose";
+import mongoose, {Types} from "mongoose";
 import type {CartItem} from "@/types";
 
 export async function POST(req: NextRequest) {
@@ -67,31 +67,23 @@ export async function GET() {
         await connectDB();
         const session = await getServerSession(authOptions);
 
-        console.log("✅ Session:", session);
-
         if (!session) {
-            console.log("❌ No session, returning 401");
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 
         const userId = session.user.id || session.user.email;
         if (!userId) {
-            console.log("❌ No user ID/email in session");
             return NextResponse.json({ error: "Invalid user session" }, { status: 400 });
         }
 
-        console.log("📌 userId used to find cart:", userId);
-
-        const cart = await Cart.findOne({ user: userId }).populate("items.product");
+        const cart = await Cart.findOne({ user: new mongoose.Types.ObjectId(userId) }).populate("items.product");
 
         if (!cart) {
-            console.log("ℹ️ No cart found, returning empty");
             return NextResponse.json([], { status: 200 });
         }
 
         if (!Array.isArray(cart.items)) {
-            console.log("❗️ cart.items is not array:", cart.items);
-            return NextResponse.json([], { status: 200 });
+                   return NextResponse.json([], { status: 200 });
         }
 
         return NextResponse.json(cart.items, { status: 200 });
