@@ -42,79 +42,77 @@ export default function Page() {
         );
     }
 
+    if (isLoading) return (
+        <div className="flex h-full items-center justify-center">
+            <div
+                className="h-30 w-30 animate-spin rounded-full border-5 bg-white/30 backdrop-blur-xl border-dashed border-primary"/>
+        </div>
+    )
+
     return (
         <div className="container">
             <SectionHeader subHeader="" mainHeader="سبد خرید"/>
+            <div className="h-full">
+                {cartItems?.length === 0 && !isLoading ? (
+                    <p className="text-center text-gray-600 mt-6">سبد خرید شما خالی است.</p>
+                ) : (
+                    <div className="grid grid-cols-4 gap-6 mt-6">
+                        <div className="col-span-4 md:col-span-3 flex flex-col space-y-3">
+                            {cartItems?.map((item) => {
+                                const product = item?.product as Partial<Product>;
 
-            {isLoading ? (
-                <div className="flex h-full items-center justify-center">
-                    <div
-                        className="h-30 w-30 animate-spin rounded-full border-5 bg-white/30 backdrop-blur-xl border-dashed border-primary"/>
-                </div>
-            ) : (
-                <div className="h-full">
-                    {cartItems?.length === 0 && !isLoading ? (
-                        <p className="text-center text-gray-600 mt-6">سبد خرید شما خالی است.</p>
-                    ) : (
-                        <div className="grid grid-cols-4 gap-6 mt-6">
-                            <div className="col-span-4 md:col-span-3 flex flex-col space-y-3">
-                                {cartItems?.map((item) => {
-                                    const product = item?.product as Partial<Product>;
-
-                                    return (
-                                        <div
-                                            key={product._id}
-                                            className="flex items-center justify-between border border-gray-400 rounded-xl p-4 shadow-sm gap-3"
-                                        >
-                                            <div className="flex gap-4 items-center">
-                                                <img
-                                                    src={product.image}
-                                                    alt={product.name}
-                                                    className="w-32 max-h-[70px] object-cover rounded-md"
-                                                />
-                                                <div className="flex flex-col gap-2">
-                                                    <div className="flex gap-x-2 items-center">
-                                                        <h3 className="text-lg font-semibold">{product.name}</h3>
-                                                        <p className="text-gray-600 text-sm">سایز: {item.size}</p>
-                                                    </div>
-                                                    <p className="text-gray-700 text-sm">
-                                                        قیمت: {toPersianNumber(product?.sizes?.find(s => s.label === item.size)?.price || 0, true)} تومان
-                                                    </p>
-                                                    <p className="text-gray-700 text-sm">
-                                                        تعداد: {toPersianNumber(item.quantity)}
-                                                    </p>
+                                return (
+                                    <div
+                                        key={product._id}
+                                        className="flex items-center justify-between border border-gray-400 rounded-xl p-4 shadow-sm gap-3"
+                                    >
+                                        <div className="flex gap-4 items-center">
+                                            <img
+                                                src={product.image}
+                                                alt={product.name}
+                                                className="w-32 max-h-[70px] object-cover rounded-md"
+                                            />
+                                            <div className="flex flex-col gap-2">
+                                                <div className="flex gap-x-2 items-center">
+                                                    <h3 className="text-lg font-semibold">{product.name}</h3>
+                                                    <p className="text-gray-600 text-sm">سایز: {item.size}</p>
                                                 </div>
+                                                <p className="text-gray-700 text-sm">
+                                                    قیمت: {toPersianNumber(product?.sizes?.find(s => s.label === item.size)?.price || 0, true)} تومان
+                                                </p>
+                                                <p className="text-gray-700 text-sm">
+                                                    تعداد: {toPersianNumber(item.quantity)}
+                                                </p>
                                             </div>
-                                            <button
-                                                className="rounded-full bg-red-600 w-10 h-10 text-white flex items-center justify-center"
-                                            >
-                                                <FaRegTrashAlt/>
-                                            </button>
                                         </div>
-                                    );
-                                })}
-                            </div>
-
-                            {/* Totals */}
-                            <div
-                                className="col-span-4 md:col-span-1 h-fit rounded-lg shadow-sm bg-white p-4 border border-gray-400">
-                                <h4 className="text-lg font-bold text-gray-800 mb-4 border-b pb-3">اطلاعات پرداخت</h4>
-                                <p className="flex items-center gap-x-1 text-gray-700 mb-2">مبلغ کل:
-                                    <span className="text-primary font-semibold">{toPersianNumber(totalPrice)}</span>
-                                </p>
-                                <p className="flex items-center gap-x-1 text-gray-700 mb-2">تعداد کل:
-                                    <span className="text-primary font-semibold">{toPersianNumber(totalQuantity)}</span>
-                                </p>
-                                <button
-                                    className="w-full bg-primary text-white py-2 rounded hover:bg-primary/80 transition">
-                                    ادامه پرداخت
-                                </button>
-                            </div>
+                                        <button
+                                            className="rounded-full bg-red-600 w-10 h-10 text-white flex items-center justify-center"
+                                        >
+                                            <FaRegTrashAlt/>
+                                        </button>
+                                    </div>
+                                );
+                            })}
                         </div>
 
-                    )}
-                </div>
-            )}
+                        {/* Totals */}
+                        <div
+                            className="col-span-4 md:col-span-1 h-fit rounded-lg shadow-sm bg-white p-4 border border-gray-400">
+                            <h4 className="text-lg font-bold text-gray-800 mb-4 border-b pb-3">اطلاعات پرداخت</h4>
+                            <p className="flex items-center gap-x-1 text-gray-700 mb-2">مبلغ کل:
+                                <span className="text-primary font-semibold">{toPersianNumber(totalPrice)}</span>
+                            </p>
+                            <p className="flex items-center gap-x-1 text-gray-700 mb-2">تعداد کل:
+                                <span className="text-primary font-semibold">{toPersianNumber(totalQuantity)}</span>
+                            </p>
+                            <button
+                                className="w-full bg-primary text-white py-2 rounded hover:bg-primary/80 transition">
+                                ادامه پرداخت
+                            </button>
+                        </div>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }
