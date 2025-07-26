@@ -161,6 +161,7 @@ export async function getAllCarts(): Promise<CartItem[] | []> {
             method: "GET",
             credentials: "include",
         });
+        console.log(res)
         if (!res.ok) new Error("دریافت سبد خرید با خطا مواجه شد");
         return res.json();
     } catch (error) {
