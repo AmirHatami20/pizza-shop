@@ -67,21 +67,38 @@ export async function GET() {
         await connectDB();
         const session = await getServerSession(authOptions);
 
+        console.log("✅ Session:", session);
+
         if (!session) {
-            return NextResponse.json({error: "Unauthorized"}, {status: 401});
+            console.log("❌ No session, returning 401");
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 
-        const userIdentifier = session.user.id || session.user.email;
-        const cart = await Cart.findOne({user: userIdentifier}).populate("items.product");
+        const userId = session.user.id || session.user.email;
+        if (!userId) {
+            console.log("❌ No user ID/email in session");
+            return NextResponse.json({ error: "Invalid user session" }, { status: 400 });
+        }
+
+        console.log("📌 userId used to find cart:", userId);
+
+        const cart = await Cart.findOne({ user: userId }).populate("items.product");
 
         if (!cart) {
-            return NextResponse.json({items: []}, {status: 200});
+            console.log("ℹ️ No cart found, returning empty");
+            return NextResponse.json([], { status: 200 });
         }
 
-        return NextResponse.json(cart?.items || [], {status: 200});
+        if (!Array.isArray(cart.items)) {
+            console.log("❗️ cart.items is not array:", cart.items);
+            return NextResponse.json([], { status: 200 });
+        }
+
+        return NextResponse.json(cart.items, { status: 200 });
 
     } catch (error) {
-        console.error("Get cart error:", error);
-        return NextResponse.json({error: "Internal server error"}, {status: 500});
+        console.error("🔥 Get cart error:", error);
+        return NextResponse.json({ error: "Internal server error", details: String(error) }, { status: 500 });
     }
 }
+

@@ -15,6 +15,7 @@ export default function Page() {
 
     const {useGetCart} = useAPI();
     const {data: cartItems = [], isLoading} = useGetCart()
+    console.log(cartItems);
 
     const totalQuantity = isAuthenticated && Array.isArray(cartItems)
         ? cartItems?.reduce((sum, item) => sum + item.quantity, 0)
