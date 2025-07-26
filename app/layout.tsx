@@ -14,7 +14,7 @@ const vazir = Vazirmatn({
 export const metadata = {
     icons: {
         icon: "/logo.svg",
-    },
+    }
 };
 
 export default async function RootLayout({children}: { children: ReactNode }) {
